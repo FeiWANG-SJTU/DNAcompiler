@@ -1,10 +1,12 @@
+#the main program
 import d_lexer1
 import d_parser
 import d_ast1
 import d_inte_gene_2bit_bus as d_inte_gene
 import d_gene_v4 as d_gene
 ##mypro=' if a != 2 : b = a else : b = a + 1 '
-mypro=' s = 1 * 2 + 1'
+print ("Sample Program: s = 1 * 2 + 1")
+mypro=input("Enter your program: ")
 print('*'*30)
 print('Entered program:')
 print()

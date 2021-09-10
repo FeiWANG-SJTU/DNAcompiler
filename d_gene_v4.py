@@ -588,7 +588,7 @@ def d_gene(incode):
                     
             elif 'num'in tmp[1][i]:
                 num=tmp[1][i][1]
-                instr.append('WIR2([num,%d],%s,%d)'%(num,add2,i))
+                instr.append('WIR1([num,%d],%s,%d)'%(num,add2,i))
 ##            else :
 ##                print('error')
 ##            print(tmp)
@@ -638,7 +638,7 @@ def d_gene(incode):
                                     pnum=inns.split(',')[2].split(')')[0]
                                     po=instr.index(inns)
                                     
-                                    instr[po]='WIR2(%s,%s,%s)'%(v_f,t,pnum)
+                                    instr[po]='WIR1(%s,%s,%s)'%(v_f,t,pnum)
     nins=[]
     for ins in instr:
         if instr.index(ins) not in pos:
