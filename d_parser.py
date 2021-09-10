@@ -5,8 +5,8 @@
 import d_ast1
 headers=[]
 idnum=0
-#建立对应的节点
-def ifif(tokens):#如果是if语句，则创建if节点
+#build the corresponding node 建立对应的节点
+def ifif(tokens):#for an if expr, create if node .如果是if语句，则创建if节点
     #print(tokens)
     for token in tokens:
         if ':' in token:
@@ -110,7 +110,7 @@ def ifassign(tokens):
     nheader=d_ast1.AssignStmt(name, aexp)
     return nheader
 
-##以下判断一个tokens list属于哪种表达
+##to judge the type of tokens 以下判断一个tokens list属于哪种表达
 def isif(tokens):
     if tokens[0][0]=='if':
         return True
@@ -156,7 +156,7 @@ def isfactor(tokens):
         
     return False
     
-### 开始visit
+### visit the node 开始visit
 def visitif(header):
     global headers
     global idnum
@@ -171,7 +171,7 @@ def visitif(header):
         
         visitrel(nheader)
         headers.append(nheader)
-    # 进入并执行新建的节点
+    # enter and create new nodes 进入并执行新建的节点
     elif islog (header.condition):
         nheader=iflog(header.condition)
         header.addcchild(nheader)
@@ -180,10 +180,10 @@ def visitif(header):
         
         headers.append(nheader)
     else:
-        header.addcchild(d_ast1.node(header.condition))# 需要修改NODE class
+        header.addcchild(d_ast1.node(header.condition))# need to change node class 需要修改NODE class
         
     #print(header.false_stmt)    
-    if isassign(header.true_stmt): #执行语句只有赋值语句
+    if isassign(header.true_stmt): # with only assign expr 执行语句只有赋值语句
         nheader=ifassign(header.true_stmt)
         header.addtchild(nheader)
         
@@ -212,7 +212,7 @@ def visitfor(header):
     for_change=''
     ini=''
     tmp=[]
-    if isassign(header.body): #执行语句只有一句赋值语句
+    if isassign(header.body): # for only assign 执行语句只有一句赋值语句
         bodies=[]
         
 
@@ -359,7 +359,7 @@ def visitlog(header):
         header.addlchild([])
     else:
         print('Operaton not defined !')
-    #处理右分支    
+    #begin to process the right branch 处理右分支    
     if len(header.log2)==1:
         header.addrchild(d_ast1.node(header.log2))
     elif isrel(header.log2):
@@ -479,7 +479,7 @@ def visitfactor(header):
     return header
 
 def d_par(tokens):
-    #开始执行，调用上述函数
+    #begin the main function, call above defs 开始执行，调用上述函数
     global headers
     global idnum
     root=d_ast1.tree('headers')

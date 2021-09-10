@@ -372,16 +372,16 @@ def d_gene(incode):
     idnum=len(incode)*2
     global poin
     #current point
-    var=[] #暂时存放输出变量，直到最后要求输出那个再输出
-    varpoi=0#变量指针序号
-    numin=0 #输入变量的个数
+    var=[] #to temporarily store output variables 暂时存放输出变量，直到最后要求输出那个再输出
+    varpoi=0 # index of variable point 变量指针序号
+    numin=0 # number of input variables 输入变量的个数
     for i in range(10): #contain variables
         dic={'id':'','value':0}
         var.append(dic)
     #print(var)
 
     #############
-    ##把每一句拆成2bit格式的    
+    ## divide each intermediate code to 2 bits 把每一句拆成2bit格式的    
     nincode=[] # new generated code
     for cod in incode:
         ncod=incd()
@@ -432,24 +432,24 @@ def d_gene(incode):
     for co in nincode:
         print(co.num,co.type ,co.in1 ,co.in2, co.in3 ) 
     ###### the end of 2 bit separation
-    ####对新的incode进行分析
+    #### analyze newly generated incode 对新的incode进行分析
     for co in nincode:
         #print(co,len(co))
-        if co.type=='if':#对if语句的拆解
+        if co.type=='if':# if node 对if语句的拆解
             tmp_ins.append(['FLAG',co.in2[0],co.in1[0]])
             tmp_ins.append(['FLAG',co.in2[1],co.in1[0]])
             print(co.num,co.type ,co.in1 ,co.in2, co.in3 )
             
             inp=[co.in1[0]]
-            addr=[['id',poin['not']],idnum] #addr 用来建立输入与输出之间的联络，暂存于tmp_table
-            poin['not']=poin['not']+1 #指针移动，无法判断是否走过了
+            addr=[['id',poin['not']],idnum] #addr : to build connection between input and output
+            poin['not']=poin['not']+1 #move point, 指针移动，无法判断是否走过了
             idnum=idnum+1
             tmp_table.append([addr, inp,idnum])
             tmp_ins.append(['FLAG',co.in3[0],['id',poin['not']-1]])
             tmp_ins.append(['FLAG',co.in3[1],['id',poin['not']-1]])
-        elif co.type=='while': # 对while句的拆解
+        elif co.type=='while': # while node. not finished yet by 2021.09
             addr=poin['whil']
-        elif co.type=='=': #赋值语句
+        elif co.type=='=': #assign node
             #print(co)
             addr=['var %d'%varpoi,co.num[0]]
             var[varpoi]['id']=co.in1[0]
@@ -467,7 +467,7 @@ def d_gene(incode):
             oup=co.num[1]
             tmp_table.append([addr, inp,oup])
         elif co.type in ['and','or','xor','not','nor','xnor','nand']:
-            #逻辑运算
+            #logic computation
             
             inp1=co.in1
             inp2=co.in2
@@ -490,7 +490,7 @@ def d_gene(incode):
             for eleme in tmp_table:
                 print (eleme)
         elif co.type in ['==','!=','>','<','>=','<=']: # 关系运算
-            # not finished
+            # not finished (>= and <=)
             inp1=co.in1
             inp2=co.in2
             oup=co.num
@@ -505,7 +505,7 @@ def d_gene(incode):
             
   
 
-        elif co.type in ['+','-','*','/']: #算数运算
+        elif co.type in ['+','-','*','/']: #arithmetic node 算数运算
             inp1=co.in1
             inp2=co.in2
             oup=co.num
@@ -526,7 +526,7 @@ def d_gene(incode):
 ##            tmp_table.append([addr, inp,oup])
 ##    print(tmp_table)
 ##    print(var)
-    #处理FLAG部分
+    #begin to process Flag 处理FLAG部分
     for ins in tmp_ins:
         if ins[0]=='FLAG':
             print(ins)
@@ -550,7 +550,9 @@ def d_gene(incode):
 ##                    addr2=tmp[0][0]
             print(addr1,addr2)
             instr.append(['FLAG',addr1,addr2])
-    #处理临时表
+    # **************        
+    #Begin to process tmp table
+
     # print('tmp table')
     # for tmp in tmp_table:
     #     print(tmp)
@@ -560,43 +562,24 @@ def d_gene(incode):
 ##        print(instr)
 ##        if isinstance(tmp[0][0],int):
         for i in range(len(tmp[1])):
-            #两个input
+            #two inputs
 ##            print('****')
 ##            print(tmp[1][i])
-            if 'id' in tmp[1][i] and 'var' not in tmp[0][0]: #输入中包含id的
+            if 'id' in tmp[1][i] and 'var' not in tmp[0][0]: #if input has an id 
                 add1=tmp[1][i][1]
                 #print('add1',add1)
                 if type(add1)==str:
-                    #如果id后面是一个变量名,表示需要输入input
+                    #if id if followed by a variable 如果id后面是一个变量名,表示需要输入input
                     add1=numin
                     vname=tmp[1][i][1]
                     instr.append('WIR1(%s,%s,%d)'%(vname,add2,i))
-                    # toapp='WIR1(%s,%d)'%(vname,numin) #等待append
-                    # totest='WIR1(%s'%(vname)#等待判断是否已经输入
-                    # tmpf=0 #临时flag
-                    # lo=0 #所在位置
-                    # for ins in instr:
-                    #     #print(ins)
-                    #     if totest in ins:
-                    #         tmpf=1
-                    #         break
-                    #     else:
-                    #         lo+=1
-                    # #print('lo',lo)        
-                    # if not tmpf :
-                    #     instr.append(toapp)
-                    #     instr.append('WIR1(%s,%s,%d)'%(vname,add2,i))
-                    #     numin=numin+1
-                    # else:
-                    #     #如果变量表中已经有这个变量了。
-                    #     instr.append('WIR1(%d,%s,%d)'%(int(ins.split(',')[1].split(')')[0]),add2,i))
                     
                     
                 else:
-                    #在临时表中寻找输出的位置
+                    #find the output location in tmp_table 在临时表中寻找输出的位置
                     for ntmp in tmp_table:
-                        oid1=ntmp[0][0][1] #地址直接以端口号表示
-                        oid2=ntmp[0][1]  # 地址以程序编号表示
+                        oid1=ntmp[0][0][1] # the output id is represented by port id 地址直接以端口号表示
+                        oid2=ntmp[0][1]  # the output id is represented by command id 地址以程序编号表示
                         #print(oid1,add1)
                         if oid1==add1 or oid2==add1:
                             instr.append('WIR2(%s,%s,%d)'%(ntmp[0][0][1],add2,i))
@@ -611,7 +594,7 @@ def d_gene(incode):
 ##            print(tmp)
 ##            print(instr)
         vi=0
-    #处理临时变量
+    #begin to process temp variables 处理临时变量
     for va in var[0:varpoi]:
         vi+=1
 ##        print('***************')
@@ -632,12 +615,12 @@ def d_gene(incode):
             
     
     print()
-    #inp与var的连接
+    # the connection between input and var inp与var的连接
     pos=[]
     for ins in instr:
         if 'INP' in ins:
             i_name=ins.split('(')[1].split(',')[0]
-            i_po=ins.split(',')[1].split(')')[0] # 在input寄存器中的位置
+            i_po=ins.split(',')[1].split(')')[0] # location in input buffer
             for inn in instr[0:len(instr)-2]:
                 if 'VAR' in inn:
                     v_name=inn.split('(')[1].split(',')[0]

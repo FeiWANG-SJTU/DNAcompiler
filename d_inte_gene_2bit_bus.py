@@ -3,7 +3,7 @@
 # output: intermediate cod_for_print, cod 
 # by OL , sep 3, 2016
 class incd:
-    #一行中间代码
+    #for one line of intermediate code 一行中间代码
     def __init__(self):
         self.num=0
         self.type=''
@@ -16,7 +16,7 @@ def in_gene(headers):
     for header in headers:
         
         
-        if header.data=='if': #如果是if节点
+        if header.data=='if': # for a if node 如果是if节点
             a='%s : if [%s,%s] : [%s,%s] else : [%s,%s]'%(header.id,header.cchild[0].num,header.cchild[0].id,\
                                                        header.tchild[0].num,header.tchild[0].id,\
                                                       header.fchild[0].num, header.fchild[0].id)
@@ -28,7 +28,7 @@ def in_gene(headers):
             co.in2=[header.tchild[0].num,header.tchild[0].id]
             co.in3=[header.fchild[0].num,header.fchild[0].id]
             cod.append(co)
-        elif header.data=='while': #while节点
+        elif header.data=='while': # for a while node while节点
             a='%s  :  while [%s,%s]:[%s,%s]'%(header.id,header.cchild[0].num,header.cchild[0].id,\
                                            header.bchild[0].num,header.bchild[0].id)
             cod_for_print.append(a)
@@ -38,7 +38,7 @@ def in_gene(headers):
             co.in1=[header.cchild[0].num,header.cchild[0].id]
             co.in2=[header.bchild[0].num,header.bchild[0].id]
             cod.append(co)
-        elif header.data =='=': #赋值运算
+        elif header.data =='=': #for a assign node 赋值运算
             a='%s  :  [%s,%s] = [%s,%s]'%(header.id,header.nchild[0].num,header.nchild[0].id,\
                                        header.achild[0].num,header.achild[0].id)
             cod_for_print.append(a)
@@ -48,7 +48,7 @@ def in_gene(headers):
             co.in1=[header.nchild[0].num,header.nchild[0].id]
             co.in2=[header.achild[0].num,header.achild[0].id]
             cod.append(co)
-        elif header.data in ['==','!=','<=','>=','<','>']: #关系运算
+        elif header.data in ['==','!=','<=','>=','<','>']: #for a ralation node 关系运算
             a='%s  :  [%s,%s] %s [%s,%s]'%(header.id,header.lchild[0].num,header.lchild[0].id,\
                                        header.data,header.rchild[0].num,header.rchild[0].id)
             cod_for_print.append(a)
@@ -58,7 +58,7 @@ def in_gene(headers):
             co.in1=[header.lchild[0].num,header.lchild[0].id]
             co.in2=[header.rchild[0].num,header.rchild[0].id]
             cod.append(co)
-        elif header.data in ['and','or','xor','nor','xnor','nand']:#逻辑运算
+        elif header.data in ['and','or','xor','nor','xnor','nand']:#for a logic node 逻辑运算
             a='%s  :  [%s,%s] %s [%s,%s]'%(header.id,header.lchild[0].num,header.lchild[0].id,\
                                         header.data , header.rchild[0].num,header.rchild[0].id)
             cod_for_print.append(a)
