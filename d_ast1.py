@@ -1,5 +1,5 @@
 class node:
-    #端点节点，包括变量和数字
+    #node，include variables and constants
  
     def __init__(self, data):
         self.num=data[0][0]
@@ -19,7 +19,7 @@ class node:
         else:
             self.children.append(node)
 class tree:
-    #根节点
+    #root nodes
     def __init__(self, data):
         
         self.id=0
@@ -116,7 +116,7 @@ class Rel:
         self.lchild.append(node)
     def addrchild(self,node):
         self.rchild.append(node)
-class Log(): #逻辑表达式
+class Log(): #logic expressions
     def __init__(self,expr1,expr2,op):
         self.data=op
         self.log1=expr1
@@ -129,7 +129,7 @@ class Log(): #逻辑表达式
         self.lchild.append(node)
     def addrchild(self,node):
         self.rchild.append(node)
-class Expr(): #表达式 add
+class Expr(): #expr
     def __init__(self,expr1,term,op):
         self.data=op
         self.expr1=expr1

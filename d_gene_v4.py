@@ -13,7 +13,7 @@ def adder(inp1,inp2,oup):
     # out: oup[0] oup[1]
     global poin 
     tmp_table=[]
-    # compiling of 1bit full adder
+    # compiling of 2bit full adder
     if poin['xor']>1021 or poin['and']>1010: # pointer for and xor
         #print(poin['xor'],poin['and'])
         print( 'ERROR: SPACE not enough')
@@ -120,7 +120,7 @@ def div(inp1,inp2,oup):
         tmp_table.append([addr,[['id',poin['and']-2],['id',poin['and']-1]],oup[0]])
         poin['or']+=1
         return tmp_table
-def dand(inp1,inp2,oup):
+def dand(inp1,inp2,oup): # and logic
     global poin
     tmp_table=[]
     if poin['and']>1011 or poin['or']>1004:
@@ -136,6 +136,8 @@ def dand(inp1,inp2,oup):
         addr=[['id',poin['and']],oup[0]]
         tmp_table.append([addr,[['id',poin['or']-2],['id',poin['or']-1]],oup[0]])
         poin['and']+=1
+        #tmp_table.append([[['num',0],4],[['num',0]],4]) # modified 2109, ok
+        tmp_table.append([[['num',0],oup[1]],[['num',0]],oup[1]])
         return tmp_table
 def dor(inp1,inp2,oup):
     global poin
@@ -153,6 +155,7 @@ def dor(inp1,inp2,oup):
         addr=[['id',poin['or']],oup[0]]
         tmp_table.append([addr,[['id',poin['or']-2],['id',poin['or']-1]],oup[0]])
         poin['or']+=1
+        tmp_table.append([[['num',0],oup[1]],[['num',0]],oup[1]])
         return tmp_table
 def dxor(inp1,inp2,oup):
     global poin
@@ -170,6 +173,7 @@ def dxor(inp1,inp2,oup):
         addr=[['id',poin['xor']],oup[0]]
         tmp_table.append([addr,[['id',poin['or']-2],['id',poin['or']-1]],oup[0]])
         poin['xor']+=1
+        tmp_table.append([[['num',0],oup[1]],[['num',0]],oup[1]])
         return tmp_table
 def dnot(inp1,oup):
     global poin
@@ -184,6 +188,7 @@ def dnot(inp1,oup):
         addr=[['id',poin['not']],oup[0]]
         tmp_table.append([addr,[['id',poin['or']-1]],oup[0]])
         poin['not']+=1
+        tmp_table.append([[['num',0],oup[1]],[['num',0]],oup[1]])
         return tmp_table
 def dxnor(inp1,inp2,oup):
     global poin
@@ -204,6 +209,7 @@ def dxnor(inp1,inp2,oup):
         addr=[['id',poin['not']],oup[0]]
         tmp_table.append([addr,[['id',poin['xor']-1]],oup[0]])
         poin['not']+=1
+        tmp_table.append([[['num',0],oup[1]],[['num',0]],oup[1]])
         return tmp_table
 def dnor(inp1,inp2,oup):
     global poin
@@ -224,6 +230,7 @@ def dnor(inp1,inp2,oup):
         addr=[['id',poin['not']],oup[0]]
         tmp_table.append([addr,[['id',poin['or']-1]],oup[0]])
         poin['not']+=1
+        tmp_table.append([[['num',0],oup[1]],[['num',0]],oup[1]])
         return tmp_table
 def dnand(inp1,inp2,oup):
     global poin
@@ -244,6 +251,7 @@ def dnand(inp1,inp2,oup):
         addr=[['id',poin['not']],oup[0]]
         tmp_table.append([addr,[['id',poin['and']-1]],oup[0]])
         poin['not']+=1
+        tmp_table.append([[['num',0],oup[1]],[['num',0]],oup[1]])
         return tmp_table
 def eq(inp1,inp2,oup):
     global poin
@@ -264,6 +272,7 @@ def eq(inp1,inp2,oup):
         addr=[['id',poin['not']],oup[0]]
         tmp_table.append([addr,[['id',poin['or']-1]],oup[0]])
         poin['not']+=1
+        tmp_table.append([[['num',0],oup[1]],[['num',0]],oup[1]])
         return tmp_table
 def neq(inp1,inp2,oup):
     global poin
@@ -281,6 +290,7 @@ def neq(inp1,inp2,oup):
         addr=[['id',poin['or']],oup[0]]
         tmp_table.append([addr,[['id',poin['xor']-2],['id',poin['xor']-1]],oup[0]])
         poin['or']+=1
+        tmp_table.append([[['num',0],oup[1]],[['num',0]],oup[1]])
         return tmp_table
 def lthan(inp1,inp2,oup):
     global poin
@@ -313,6 +323,7 @@ def lthan(inp1,inp2,oup):
         addr=[['id',poin['or']],oup[0]]
         tmp_table.append([addr,[['id',poin['and']-3],['id',poin['and']-1]],oup[0]])
         poin['or']+=1
+        tmp_table.append([[['num',0],oup[1]],[['num',0]],oup[1]])
         return tmp_table
 
 def sthan(inp1,inp2,oup):
@@ -346,20 +357,21 @@ def sthan(inp1,inp2,oup):
         addr=[['id',poin['or']],oup[0]]
         tmp_table.append([addr,[['id',poin['and']-3],['id',poin['and']-1]],oup[0]])
         poin['or']+=1
+        tmp_table.append([[['num',0],oup[1]],[['num',0]],oup[1]])
         return tmp_table
 
 
     
-### 内部算法结束
+### the end of internal algorithm
     
 def d_gene(incode):
     
     tmp_table=[]
-    tmp_ins=[]# 暂存指令
-    instr=[] #存放最终产生的指令
+    tmp_ins=[]# temp instructions
+    instr=[] #final instructions
     idnum=len(incode)*2
     global poin
-    #当前指针
+    #current point
     var=[] #暂时存放输出变量，直到最后要求输出那个再输出
     varpoi=0#变量指针序号
     numin=0 #输入变量的个数
@@ -417,9 +429,9 @@ def d_gene(incode):
             ncod.in3=[]
         nincode.append(ncod)
         #print(ncod.num,ncod.type ,ncod.in1 ,ncod.in2, ncod.in3 )
-##    for co in nincode:
-##        print(co.num,co.type ,co.in1 ,co.in2, co.in3 ) 
-    ######拆分结束
+    for co in nincode:
+        print(co.num,co.type ,co.in1 ,co.in2, co.in3 ) 
+    ###### the end of 2 bit separation
     ####对新的incode进行分析
     for co in nincode:
         #print(co,len(co))
@@ -446,6 +458,7 @@ def d_gene(incode):
             inp=[co.in2[0]]
             oup=co.num[0]
             tmp_table.append([addr, inp,oup])
+            
             addr=['var %d'%varpoi,co.num[1]]
             var[varpoi]['id']=co.in1[1]
             var[varpoi]['value']=co.in2[1]
@@ -455,6 +468,7 @@ def d_gene(incode):
             tmp_table.append([addr, inp,oup])
         elif co.type in ['and','or','xor','not','nor','xnor','nand']:
             #逻辑运算
+            
             inp1=co.in1
             inp2=co.in2
             oup=co.num
@@ -472,6 +486,9 @@ def d_gene(incode):
                 tmp_table.extend(dnand(inp1,inp2,oup))
             elif co.type=='nor':
                 tmp_table.extend(dnor(inp1,inp2,oup))
+            print ('bf logic',)
+            for eleme in tmp_table:
+                print (eleme)
         elif co.type in ['==','!=','>','<','>=','<=']: # 关系运算
             # not finished
             inp1=co.in1

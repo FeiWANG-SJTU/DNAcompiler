@@ -8,16 +8,16 @@ import d_gene_v4 as d_gene
 print ("Sample Program: s = 1 * 2 + 1")
 mypro=input("Enter your program: ")
 print('*'*30)
-print('Entered program:')
-print()
-print(mypro)
+# print('Entered program:')
+# print()
+# print(mypro)
 tokens=d_lexer1.d_lex(mypro)
-print()
-print('*'*30)
-print('token stream :')
-for token in tokens:
-    print(token)
-print()  
+# print()
+# print('*'*30)
+# print('token stream :')
+# for token in tokens:
+#     print(token)
+# print()  
 root=d_ast1.tree('headers')
 headers=d_parser.d_par(tokens)
   
@@ -28,9 +28,9 @@ for header in headers:
         #print(header)
 #print(root.getchildren())
 cod=d_inte_gene.in_gene(headers)
-print('*'*30)
-print('intermediate code... :')
-print()
+# print('*'*30)
+# print('intermediate code... :')
+# print()
 for co in cod:
     print(co.num,co.type ,co.in1 ,co.in2, co.in3 )          
 
