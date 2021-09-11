@@ -383,11 +383,11 @@ def d_gene(incode):
     
     tmp_table=[]
     tmp_ins=[]# 暂存指令
-    instr=[] #存放最终产生的指令
+    instr=[]   #存放最终产生的指令
     idnum=len(incode)*2
     global poin
     #当前指针
-    var=[] #暂时存放输出变量，直到最后要求输出那个再输出
+    var=[]  #暂时存放输出变量，直到最后要求输出那个再输出
     varpoi=0#变量指针序号
     numin=0 #输入变量的个数
     for i in range(10): #contain variables
@@ -396,7 +396,7 @@ def d_gene(incode):
     #print(var)
 
     #############
-    ##把每一句拆成2bit格式的    
+    ##   把每一句拆成2bit格式的    
     nincode=[] # store in new generated code
     for cod in incode:
         ncod=incd()
